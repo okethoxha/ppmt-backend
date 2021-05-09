@@ -10,8 +10,6 @@ import com.techvology.ppmtfullstack.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class ProjectTaskService {
 
@@ -41,7 +39,8 @@ public class ProjectTaskService {
            projectTask.setProjectIdentifer(projectIdentifier);
 
 
-           if(projectTask.getStatus()=="" || projectTask.getStatus() == null){
+           if(projectTask.getStatus() == null || projectTask.getStatus().equals("")){
+
                projectTask.setStatus("TO_DO");
            }
 
