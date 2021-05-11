@@ -12,30 +12,24 @@ import java.util.Date;
 
 @Entity
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Email(message = "Username needs to be an email!")
-    @NotBlank(message = "Username is required!")
+    @Email(message = "Username needs to be an email")
+    @NotBlank(message = "username is required")
     @Column(unique = true)
     private String username;
-
-    @NotBlank(message = "Please enter your full name!")
+    @NotBlank(message = "Please enter your full name")
     private String fullName;
-
-    @NotBlank(message = "Password is required!")
+    @NotBlank(message = "Password field is required")
     private String password;
-
     @Transient
     private String confirmPassword;
-
     private Date create_At;
-
     private Date update_At;
 
-    //OneToMany Project
+    //OneToMany with Project
 
     public User() {
     }
@@ -106,7 +100,9 @@ public class User implements UserDetails {
         this.update_At = new Date();
     }
 
-    /*UserDetails interface methods */
+    /*
+    UserDetails interface methods
+     */
 
     @Override
     @JsonIgnore

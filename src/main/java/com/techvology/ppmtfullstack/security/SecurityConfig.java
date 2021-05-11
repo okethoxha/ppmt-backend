@@ -31,8 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public SecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler, CustomUserDetailsService customUserDetailsService
-                           ,BCryptPasswordEncoder bCryptPasswordEncoder){
+    public SecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler,
+                          CustomUserDetailsService customUserDetailsService,
+                          BCryptPasswordEncoder bCryptPasswordEncoder){
         this.unauthorizedHandler = unauthorizedHandler;
         this.customUserDetailsService = customUserDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
