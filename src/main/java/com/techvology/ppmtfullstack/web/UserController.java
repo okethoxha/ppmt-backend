@@ -3,6 +3,7 @@ package com.techvology.ppmtfullstack.web;
 import com.techvology.ppmtfullstack.domain.User;
 import com.techvology.ppmtfullstack.services.MapValidationErrorService;
 import com.techvology.ppmtfullstack.services.UserService;
+import com.techvology.ppmtfullstack.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,22 @@ import javax.validation.Valid;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private MapValidationErrorService mapValidationErrorService;
+    private final UserService userService;
+    private final MapValidationErrorService mapValidationErrorService;
+    private final UserValidator userValidator;
 
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService, MapValidationErrorService mapValidationErrorService, UserValidator userValidator){
+        this.userService = userService;
+        this.mapValidationErrorService = mapValidationErrorService;
+        this.userValidator = userValidator;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user
                                           , BindingResult result){
+        userValidator.validate(user, result);
+
         ResponseEntity<?>errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
 

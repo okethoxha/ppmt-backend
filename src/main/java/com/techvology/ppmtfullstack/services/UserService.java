@@ -25,6 +25,7 @@ public class UserService {
         try {
             newUser.setUsername(newUser.getUsername());
             newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+            newUser.setConfirmPassword("");
 
             return userRepository.save(newUser);
         }catch (Exception ex) {
