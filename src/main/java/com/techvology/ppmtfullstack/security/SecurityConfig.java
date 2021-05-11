@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.techvology.ppmtfullstack.security.SecurityConstants.SIGN_UP_URLS;
 
@@ -25,19 +26,17 @@ import static com.techvology.ppmtfullstack.security.SecurityConstants.SIGN_UP_UR
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-
-    private final JwtAuthenticationEntryPoint unauthorizedHandler;
-    private final CustomUserDetailsService customUserDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
-    public SecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler,
-                          CustomUserDetailsService customUserDetailsService,
-                          BCryptPasswordEncoder bCryptPasswordEncoder){
-        this.unauthorizedHandler = unauthorizedHandler;
-        this.customUserDetailsService = customUserDetailsService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {return  new JwtAuthenticationFilter();}
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -57,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .headers().frameOptions().sameOrigin()
+                .headers().frameOptions().sameOrigin() //To enable H2 Database
                 .and()
                 .authorizeRequests()
                 .antMatchers(
@@ -73,5 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 ).permitAll()
                 .antMatchers(SIGN_UP_URLS).permitAll()
                 .anyRequest().authenticated();
+
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
