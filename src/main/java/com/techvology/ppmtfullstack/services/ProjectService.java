@@ -14,19 +14,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectService {
 
-
-    private final ProjectRepository projectRepository;
-
-    private final BacklogRepository backlogRepository;
-
-    private final UserRepository userRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, BacklogRepository backlogRepository, UserRepository userRepository) {
-        this.projectRepository = projectRepository;
-        this.backlogRepository = backlogRepository;
-        this.userRepository = userRepository;
-    }
+    private BacklogRepository backlogRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public Project saveOrUpdateProject(Project project, String username){
 
