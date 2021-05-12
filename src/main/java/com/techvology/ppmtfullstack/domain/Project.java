@@ -35,6 +35,12 @@ public class Project {
     @JsonIgnore
     private Backlog backlog;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private User user;
+
+    private String projectLeader;
+
     public Project() {
     }
 
@@ -110,6 +116,14 @@ public class Project {
         this.backlog = backlog;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @PrePersist
     protected void onCreate(){
         this.created_At = new Date();
@@ -118,5 +132,13 @@ public class Project {
     @PreUpdate
     protected void onUpdate(){
         this.updated_At = new Date();
+    }
+
+    public String getProjectLeader() {
+        return projectLeader;
+    }
+
+    public void setProjectLeader(String projectLeader) {
+        this.projectLeader = projectLeader;
     }
 }

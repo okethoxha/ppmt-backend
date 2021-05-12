@@ -2,9 +2,11 @@ package com.techvology.ppmtfullstack.services;
 
 import com.techvology.ppmtfullstack.domain.Backlog;
 import com.techvology.ppmtfullstack.domain.Project;
+import com.techvology.ppmtfullstack.domain.User;
 import com.techvology.ppmtfullstack.exceptions.ProjectIdException;
 import com.techvology.ppmtfullstack.repositories.BacklogRepository;
 import com.techvology.ppmtfullstack.repositories.ProjectRepository;
+import com.techvology.ppmtfullstack.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,15 @@ public class ProjectService {
     @Autowired
     private BacklogRepository backlogRepository;
 
-    public Project saveOrUpdateProject(Project project){
+    @Autowired
+    private UserRepository userRepository;
+
+    public Project saveOrUpdateProject(Project project, String username){
         try{
+
+            User user =  userRepository.findByUsername(username);
+            project.setUser(user);
+            project.setProjectLeader(user.getUsername());
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 
             if(project.getId()==null){
