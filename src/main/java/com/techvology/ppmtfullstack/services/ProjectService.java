@@ -4,6 +4,7 @@ import com.techvology.ppmtfullstack.domain.Backlog;
 import com.techvology.ppmtfullstack.domain.Project;
 import com.techvology.ppmtfullstack.domain.User;
 import com.techvology.ppmtfullstack.exceptions.ProjectIdException;
+import com.techvology.ppmtfullstack.exceptions.ProjectNotFoundException;
 import com.techvology.ppmtfullstack.repositories.BacklogRepository;
 import com.techvology.ppmtfullstack.repositories.ProjectRepository;
 import com.techvology.ppmtfullstack.repositories.UserRepository;
@@ -50,32 +51,31 @@ public class ProjectService {
     }
 
 
-    public Project findProjectByIdentifier(String projectId){
+    public Project findProjectByIdentifier(String projectId, String username){
 
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
 
         if(project == null){
             throw new ProjectIdException("Project ID '"+projectId+"' does not exist");
+        }
 
+        if(!project.getProjectLeader().equals(username)){
+            throw new ProjectNotFoundException("Project not found in your account!");
         }
 
 
         return project;
     }
 
-    public Iterable<Project> findAllProjects(){
-        return projectRepository.findAll();
+    public Iterable<Project> findAllProjects(String username){
+        return projectRepository.findAllByProjectLeader(username);
     }
 
 
-    public void deleteProjectByIdentifier(String projectid){
-        Project project = projectRepository.findByProjectIdentifier(projectid.toUpperCase());
+    public void deleteProjectByIdentifier(String projectid, String username){
 
-        if(project == null){
-            throw  new  ProjectIdException("Cannot Project with ID '"+projectid+"'. This project does not exist");
-        }
 
-        projectRepository.delete(project);
+        projectRepository.delete(findProjectByIdentifier(projectid, username));
     }
 
 }
