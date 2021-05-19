@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar target/ppmtfullstack-0.0.1-SNAPSHOT.jar -Dserver.port=8081 $JAR_OPTS
+web: java $JAVA_OPTS -jar target/ppmtfullstack-0.0.1-SNAPSHOT.jar -Dserver.port=$PORT $JAR_OPTS
