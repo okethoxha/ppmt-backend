@@ -17,11 +17,15 @@ import java.security.Principal;
 @CrossOrigin
 public class BacklogController {
 
-    @Autowired
-    private ProjectTaskService projectTaskService;
+
+    private final ProjectTaskService projectTaskService;
+    private final MapValidationErrorService mapValidationErrorService;
 
     @Autowired
-    private MapValidationErrorService mapValidationErrorService;
+    public BacklogController(ProjectTaskService projectTaskService, MapValidationErrorService mapValidationErrorService){
+        this.projectTaskService = projectTaskService;
+        this.mapValidationErrorService = mapValidationErrorService;
+    }
 
 
     @PostMapping("/{backlog_id}")

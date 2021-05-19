@@ -10,17 +10,21 @@ import com.techvology.ppmtfullstack.repositories.ProjectRepository;
 import com.techvology.ppmtfullstack.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 @Service
 public class ProjectService {
 
-    @Autowired
-    private ProjectRepository projectRepository;
+
+    private final ProjectRepository projectRepository;
+    private final BacklogRepository backlogRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private BacklogRepository backlogRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    public ProjectService(ProjectRepository projectRepository, BacklogRepository backlogRepository, UserRepository userRepository) {
+        this.projectRepository = projectRepository;
+        this.backlogRepository = backlogRepository;
+        this.userRepository = userRepository;
+    }
 
     public Project saveOrUpdateProject(Project project, String username){
 

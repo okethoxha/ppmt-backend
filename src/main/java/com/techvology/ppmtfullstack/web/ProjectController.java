@@ -20,11 +20,15 @@ import java.util.Map;
 @RequestMapping("/api/project")
 public class ProjectController {
 
-    @Autowired
-    private ProjectService projectService;
+
+    private final ProjectService projectService;
+    private final MapValidationErrorService mapValidationErrorService;
 
     @Autowired
-    private MapValidationErrorService mapValidationErrorService;
+    public ProjectController(ProjectService projectService, MapValidationErrorService mapValidationErrorService){
+        this.projectService = projectService;
+        this.mapValidationErrorService = mapValidationErrorService;
+    }
 
 
     @PostMapping("")

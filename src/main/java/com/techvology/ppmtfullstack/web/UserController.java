@@ -28,22 +28,20 @@ import static com.techvology.ppmtfullstack.security.SecurityConstants.TOKEN_PREF
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private MapValidationErrorService mapValidationErrorService;
+    private final MapValidationErrorService mapValidationErrorService;
+    private final UserService userService;
+    private final UserValidator userValidator;
+    private final JwtTokenProvider tokenProvider;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserValidator userValidator;
-
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-
+    public UserController(MapValidationErrorService mapValidationErrorService, UserService userService, UserValidator userValidator, JwtTokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+        this.mapValidationErrorService = mapValidationErrorService;
+        this.userService = userService;
+        this.userValidator = userValidator;
+        this.tokenProvider = tokenProvider;
+        this.authenticationManager = authenticationManager;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
